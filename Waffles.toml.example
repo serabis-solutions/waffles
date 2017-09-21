@@ -1,0 +1,7 @@
+[listen]
+port = 3000
+address = "0.0.0.0"
+
+[proxy]
+port = 80
+address = "149.202.141.17"
