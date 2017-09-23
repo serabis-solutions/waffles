@@ -1,3 +1,6 @@
+#![cfg_attr(feature = "clippy", feature(plugin))]
+#![cfg_attr(feature = "clippy", plugin(clippy))]
+
 extern crate config;
 #[macro_use]
 extern crate error_chain;
@@ -16,7 +19,7 @@ use futures::{Future, Stream};
 use tokio_core::reactor::Core;
 use tokio_core::net::TcpListener;
 use hyper::server::Http;
-use errors::errors::*;
+use errors::*;
 use hyper::Client;
 
 fn run() -> Result<()> {
