@@ -18,7 +18,7 @@ impl Service for Proxy {
     type Future = Box<Future<Item = Self::Response, Error = hyper::Error>>;
 
     fn call(&self, req: Request) -> Self::Future {
-        proxy_request(&self.config, &self.client, req)
+        proxy_request(&self.config, &self.client, &req)
     }
 }
 
@@ -26,7 +26,7 @@ impl Service for Proxy {
 fn proxy_request(
     config: &Config,
     client: &Client<HttpConnector, Body>,
-    req: Request,
+    req: &Request,
 ) -> Box<Future<Item = Response, Error = hyper::Error>> {
     let proxy_url = format!(
         "http://{}:{}",
@@ -54,7 +54,7 @@ fn proxy_request(
         debug!("Got a response!");
         futures::future::ok(
             Response::new()
-                .with_status(res.status().clone())
+                .with_status(res.status())
                 .with_headers(res.headers().clone())
                 .with_body(res.body()),
         )
