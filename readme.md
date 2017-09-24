@@ -1,8 +1,13 @@
-generally use rust stable, but rustfmt and clippy both requre nightly
+#Waffles
+Generally you wnat to use rust stable, but rustfmt and clippy both requre nightly.
 
-#run with clippy
+## Run with clippy
+```
 rustup run nightly cargo run --features clippy
+```
 
-#run rustfmt
+## Run rustfmt
+```
 rustup run nightly cargo install rustfmt-nightly
 rustup run nightly cargo fmt
+```
