@@ -1,5 +1,6 @@
 #Waffles
-Generally you wnat to use rust stable, but rustfmt and clippy both requre nightly.
+
+Generally you want to use rust stable, but rustfmt and clippy both requre nightly.
 
 ## Run with clippy
 ```
