@@ -1,4 +1,4 @@
-#Waffles
+# Waffles
 
 Generally you want to use rust stable, but rustfmt and clippy both requre nightly.
 
