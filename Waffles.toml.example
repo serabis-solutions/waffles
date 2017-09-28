@@ -1,6 +1,9 @@
 [listen]
 port = 3000
 address = "0.0.0.0"
+secure=true
+certificate="cert/identity.p12"
+password="somepassword"
 
 [proxy]
 port = 80
