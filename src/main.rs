@@ -10,11 +10,14 @@ extern crate hyper;
 extern crate log;
 extern crate native_tls;
 extern crate pretty_env_logger;
+#[cfg(test)]
+extern crate reqwest;
 extern crate tokio_core;
 extern crate tokio_tls;
 
 mod errors;
 mod proxy;
+mod tests;
 
 use futures::{Future, Stream};
 
@@ -23,7 +26,7 @@ use tokio_core::net::TcpListener;
 use hyper::server::Http;
 use errors::*;
 use hyper::Client;
-use std::io::{Read};
+use std::io::Read;
 use std::fs::File;
 use native_tls::{Pkcs12, TlsAcceptor};
 use config::Config;
@@ -37,7 +40,7 @@ fn run() -> Result<()> {
     config
         .merge(config::File::with_name("Waffles"))
         .expect("Unable to load Waffles.toml")
-        .merge(config::Environment::with_prefix("WAFFLES"))
+        .merge(config::Environment::with_prefix("waffles"))
         .expect("Failed to read ENV");
 
     let addr = format!(
@@ -66,12 +69,7 @@ fn run() -> Result<()> {
     Ok(())
 }
 
-fn run_https(
-    config: &Config,
-    addr: &str,
-    handle: &tokio_core::reactor::Handle,
-    core: &mut Core,
-) {
+fn run_https(config: &Config, addr: &str, handle: &tokio_core::reactor::Handle, core: &mut Core) {
     let client = Client::new(handle);
     let http = Http::new();
     let sock = TcpListener::bind(&(addr.parse().expect("Invalid listen address?")), handle)
@@ -88,6 +86,7 @@ fn run_https(
         .expect("No listen::certificate file specified"))
         .expect("Failed to open certificate file");
     let mut cert = Vec::new();
+
     cert_file
         .read_to_end(&mut cert)
         .expect("Failed to read in cert file");
@@ -98,6 +97,7 @@ fn run_https(
             .get::<String>("listen.password")
             .expect("No certificate password found in config"),
     ).expect("Failed to parse pkcs12 certificates, is the password correct?");
+
     let acceptor = TlsAcceptor::builder(pkcs12)
         .expect("Failed to build https builder")
         .build()
