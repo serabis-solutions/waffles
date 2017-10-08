@@ -15,3 +15,7 @@ tokio-tls = "0.1"
 futures = "0.1"
 clippy = { version = "0.0", optional = true }
 native-tls = "0.1"
+
+[dev-dependencies]
+reqwest = "0.7"
+
